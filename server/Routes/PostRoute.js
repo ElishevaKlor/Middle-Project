@@ -5,5 +5,5 @@ route.get("/",PostController.getAllPosts)
 route.get("/:id",PostController.getPostById)
 route.post("/",PostController.createPost)
 route.put("/",PostController.updatePost)
-route.delete("/",PostController.deletePost)
+route.delete("/:id",PostController.deletePost)
 module.exports=route

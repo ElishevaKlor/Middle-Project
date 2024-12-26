@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import DashboardLayoutBasic from './Components/NavBar';
+import HomePage from './Components/HomePage';
+
+const Posts = React.lazy(() => import('./Components/Posts/Posts'));
+const Users = React.lazy(() => import('./Components/Users/Users'));
+const Todos = React.lazy(() => import('./Components/ToDoes/ToDoes'));
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<DashboardLayoutBasic />}>
+            <Route index element={<HomePage />} />
+            <Route path="users" element={<Users />} />
+            <Route path="todoes" element={<Todos />} />
+            <Route path="posts" element={<Posts />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </div>
   );
 }

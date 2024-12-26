@@ -1,7 +1,10 @@
 const mongoose=require('mongoose')
 const ToDoSchema=new mongoose.Schema(
 {
-    title:String,
+    title:{
+     type:String,
+     required:true
+    },
     tags:[String],
     completed:{
       type:Boolean,

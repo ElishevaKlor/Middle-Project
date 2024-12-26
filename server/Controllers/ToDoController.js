@@ -2,7 +2,7 @@ const ToDo=require('../modules/ToDo')
 const getAllToDoes=async(req,res)=>{
 const todoes=await ToDo.find().lean()
 if (!todoes)
-    res.status(400).send("No Todoes")
+    return res.status(400).send("No Todoes")
 res.json(todoes)
 }
 const getToDoById=async(req,res)=>{
@@ -16,37 +16,45 @@ const createToDo=async(req,res)=>{
     const {title,tags,completed}=req.body
         const todo=await ToDo.create({title,tags,completed})
         if (!todo)
-            res.status(400).send("Create Failed")
-        res.json(todo)
+            return res.status(400).send("Create Failed")
+        const todoes=await ToDo.find().lean()
+        if (!todoes)
+           return res.status(400).send("No Todoes")
+        res.json(todoes)
  }
  const updateToDo=async(req,res)=>{
     const {id,title,tags,completed}=req.body
-        if(!id)
-        res.status(400).send("id is required")
+        if(!id||!title)
+        return res.status(400).send("id and title are required")
         const todo=await ToDo.findById(id).exec()
         if (!todo)
-            res.status(400).send("No Todo")
+            return res.status(400).send("No Todo")
         todo.title=title
         todo.tags=tags
         todo.completed=completed
         const savedTodo=await todo.save()
         if (!savedTodo)
-            res.status(400).send("Update Failed")
-        res.json(savedTodo)
+            return res.status(400).send("Update Failed")
+        const todoes=await ToDo.find().lean()
+        if (!todoes)
+           return res.status(400).send("No Todoes")
+        res.json(todoes)
  }
  const deleteToDo=async(req,res)=>{
- const {id}=req.body
+    const {id}=req.params
  if (!id)
-    res.status(400).send("id is required")
+    return res.status(400).send("id is required")
  const todo=await ToDo.findById(id).exec()
  if (!todo)
-     res.status(400).send("No Todo")
-const deletedToDo=await ToDo.deleteOne()
+     return res.status(400).send("No Todo")
+const deletedToDo=await ToDo.deleteOne({ _id: id })
 
  if (!deletedToDo)
      res.status(400).send("Delete Failed")
- else 
-     res.send("Deleted Complete")
- 
+ else {
+     const todoes=await ToDo.find().lean()
+     if (!todoes)
+        return res.status(400).send("No Todoes")
+     res.json(todoes)}
  }
 module.exports={getAllToDoes,getToDoById,createToDo,updateToDo,deleteToDo}

@@ -5,5 +5,5 @@ route.get("/",ToDoController.getAllToDoes)
 route.get("/:id",ToDoController.getToDoById)
 route.post("/",ToDoController.createToDo)
 route.put("/",ToDoController.updateToDo)
-route.delete("/",ToDoController.deleteToDo)
+route.delete("/:id",ToDoController.deleteToDo)
 module.exports=route

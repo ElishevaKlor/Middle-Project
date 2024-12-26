@@ -5,5 +5,5 @@ route.get("/",UserController.getAllUsers)
 route.get("/:id",UserController.getUserById)
 route.post("/",UserController.createUser)
 route.put("/",UserController.updateUser)
-route.delete("/",UserController.deleteUser)
+route.delete("/:id",UserController.deleteUser)
 module.exports=route

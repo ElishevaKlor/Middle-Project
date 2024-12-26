@@ -18,7 +18,7 @@ connectToDB()
 mongoose.connection.once('open',()=>{
     app.listen(PORT,()=>{console.log(`server is running on port ${PORT}`)})
 })
-mongoose.connection.on('error',()=>{
+mongoose.connection.on('error',(err)=>{
     if (err) throw err
 })
 
